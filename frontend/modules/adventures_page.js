@@ -5,11 +5,21 @@ import config from "../conf/index.js";
 function getCityFromURL(search) {
   // TODO: MODULE_ADVENTURES
   // 1. Extract the city id from the URL's Query Param and return it
+  return search.split("=")[1];
 
 }
 
 //Implementation of fetch call with a paramterized input based on city
 async function fetchAdventures(city) {
+
+  try
+  {
+    let adv=await fetch(`${config.backendEndpoint}/adventures/?city=${city}`).then(res => {return res.json()});
+     return adv;
+  }
+  catch(err){
+    return null;
+  }
   // TODO: MODULE_ADVENTURES
   // 1. Fetch adventures using the Backend API and return the data
 
@@ -19,6 +29,30 @@ async function fetchAdventures(city) {
 function addAdventureToDOM(adventures) {
   // TODO: MODULE_ADVENTURES
   // 1. Populate the Adventure Cards and insert those details into the DOM
+  adventures.forEach((key) => {
+    document.getElementById("data").innerHTML+=`
+  <div class="col-12 col-sm-6 col-lg-3 mb-4 position-relative">
+  <div class="category-banner">${key.category}</div>
+    <a href="detail/?adventure=${key.id}" id=${key.id}>
+    <div class="card activity-card">
+    <img src=${key.image} class="activity-card img"/>
+    <div class="card-body">
+    <div class="row">
+    <div class="col-6 d-flex justify-content-start">${key.name}</div> 
+    <div class="col-6 d-flex justify-content-end">${key.costPerHead}</div> 
+    <div class="col-6 d-flex justify-content-start">Duration</div> 
+    <div class="col-6 d-flex justify-content-end">${key.duration} Hours</div> 
+
+    </div>
+
+    </div>
+    </div>
+    </a>
+  </div>
+    `;
+  });
+
+  
 
 }
 
